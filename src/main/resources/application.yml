@@ -1,3 +1,6 @@
 spring:
   application:
     name: TestCaseManagement
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/testcase_db
