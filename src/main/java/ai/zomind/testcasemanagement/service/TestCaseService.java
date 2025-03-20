@@ -2,11 +2,10 @@ package ai.zomind.testcasemanagement.service;
 
 import ai.zomind.testcasemanagement.dto.TestCaseRequestDto;
 import ai.zomind.testcasemanagement.dto.TestCaseResponseDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 public interface TestCaseService {
-    List<TestCaseResponseDto> getAllTestCases();
+    Page<TestCaseResponseDto> getAllTestCases(String status, String priority, int page, int size);
 
     TestCaseResponseDto getTestCaseById(String id);
 

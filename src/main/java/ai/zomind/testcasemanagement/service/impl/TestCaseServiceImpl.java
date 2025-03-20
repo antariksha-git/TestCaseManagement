@@ -11,10 +11,12 @@ import ai.zomind.testcasemanagement.model.TestCase;
 import ai.zomind.testcasemanagement.repository.TestCaseRepository;
 import ai.zomind.testcasemanagement.service.TestCaseService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -26,11 +28,41 @@ public class TestCaseServiceImpl implements TestCaseService {
     private TestCaseMapper testCaseMapper;
 
     @Override
-    public List<TestCaseResponseDto> getAllTestCases() {
-        return testCaseRepository.findAll()
-                .stream()
-                .map(testCaseMapper::toTestCaseResponseDto)
-                .toList();
+    public Page<TestCaseResponseDto> getAllTestCases(String status, String priority, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Status statusEnum = null;
+        Priority priorityEnum = null;
+
+        if (status != null) {
+            try {
+                statusEnum = Status.valueOf(status.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new InvalidDataException("Invalid status value. Allowed values are: PENDING, IN_PROGRESS, PASSED, FAILED");
+            }
+        }
+
+        if (priority != null) {
+            try {
+                priorityEnum = Priority.valueOf(priority.toUpperCase());
+            } catch (IllegalArgumentException e) {
+                throw new InvalidDataException("Invalid priority value. Allowed values are: LOW, MEDIUM, HIGH");
+            }
+        }
+
+        if (statusEnum == null && priorityEnum == null) {
+            return testCaseRepository.findAll(pageable)
+                    .map(testCaseMapper::toTestCaseResponseDto);
+        } else if (statusEnum != null && priorityEnum == null) {
+            return testCaseRepository.findByStatus(statusEnum, pageable)
+                    .map(testCaseMapper::toTestCaseResponseDto);
+        } else if (statusEnum == null) {
+            return testCaseRepository.findByPriority(priorityEnum, pageable)
+                    .map(testCaseMapper::toTestCaseResponseDto);
+        } else {
+            return testCaseRepository.findByStatusAndPriority(statusEnum, priorityEnum, pageable)
+                    .map(testCaseMapper::toTestCaseResponseDto);
+        }
     }
 
     @Override
