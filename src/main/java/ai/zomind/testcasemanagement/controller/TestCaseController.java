@@ -1,6 +1,7 @@
 package ai.zomind.testcasemanagement.controller;
 
-import ai.zomind.testcasemanagement.model.TestCase;
+import ai.zomind.testcasemanagement.dto.TestCaseRequestDto;
+import ai.zomind.testcasemanagement.dto.TestCaseResponseDto;
 import ai.zomind.testcasemanagement.service.TestCaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,36 +26,35 @@ public class TestCaseController {
     private TestCaseService testCaseService;
 
     @GetMapping
-    public List<TestCase> getAllTestCases() {
+    public List<TestCaseResponseDto> getAllTestCases() {
         return testCaseService.getAllTestCases();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TestCase> getTestCaseById(@PathVariable String id) {
-        TestCase testCase = testCaseService.getTestCaseById(id);
-        return ResponseEntity.ok(testCase);
+    public ResponseEntity<TestCaseResponseDto> getTestCaseById(@PathVariable String id) {
+        TestCaseResponseDto testCaseResponseDto = testCaseService.getTestCaseById(id);
+        return ResponseEntity.ok(testCaseResponseDto);
     }
 
     @PostMapping
-    public ResponseEntity<TestCase> createTestCase(@RequestBody TestCase testCase) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(testCaseService.createTestCase(testCase));
+    public ResponseEntity<TestCaseResponseDto> createTestCase(@RequestBody TestCaseRequestDto testCaseRequestDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(testCaseService.createTestCase(testCaseRequestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TestCase> updateTestCase(@PathVariable String id, @RequestBody TestCase updatedTestCase) {
+    public ResponseEntity<TestCaseResponseDto> updateTestCase(@PathVariable String id, @RequestBody TestCaseRequestDto testCaseRequestDto) {
         try {
-            TestCase testCase = testCaseService.updateTestCase(id, updatedTestCase);
-            return ResponseEntity.ok(testCase);
+            TestCaseResponseDto testCaseResponseDto = testCaseService.updateTestCase(id, testCaseRequestDto);
+            return ResponseEntity.ok(testCaseResponseDto);
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTestCase(@PathVariable String id) {
+    public ResponseEntity<TestCaseResponseDto> deleteTestCase(@PathVariable String id) {
         try {
-            testCaseService.deleteTestCase(id);
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(testCaseService.deleteTestCase(id));
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }

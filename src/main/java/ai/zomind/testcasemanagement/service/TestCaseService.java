@@ -1,17 +1,18 @@
 package ai.zomind.testcasemanagement.service;
 
-import ai.zomind.testcasemanagement.model.TestCase;
+import ai.zomind.testcasemanagement.dto.TestCaseRequestDto;
+import ai.zomind.testcasemanagement.dto.TestCaseResponseDto;
 
 import java.util.List;
 
 public interface TestCaseService {
-    List<TestCase> getAllTestCases();
+    List<TestCaseResponseDto> getAllTestCases();
 
-    TestCase getTestCaseById(String id);
+    TestCaseResponseDto getTestCaseById(String id);
 
-    TestCase createTestCase(TestCase testCase);
+    TestCaseResponseDto createTestCase(TestCaseRequestDto testCaseRequestDto);
 
-    TestCase updateTestCase(String id, TestCase updatedTestCase);
+    TestCaseResponseDto updateTestCase(String id, TestCaseRequestDto testCaseRequestDto);
 
-    void deleteTestCase(String id);
+    TestCaseResponseDto deleteTestCase(String id);
 }
