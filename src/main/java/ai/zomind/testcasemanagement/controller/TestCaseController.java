@@ -3,6 +3,7 @@ package ai.zomind.testcasemanagement.controller;
 import ai.zomind.testcasemanagement.dto.TestCaseRequestDto;
 import ai.zomind.testcasemanagement.dto.TestCaseResponseDto;
 import ai.zomind.testcasemanagement.service.TestCaseService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,26 +38,18 @@ public class TestCaseController {
     }
 
     @PostMapping
-    public ResponseEntity<TestCaseResponseDto> createTestCase(@RequestBody TestCaseRequestDto testCaseRequestDto) {
+    public ResponseEntity<TestCaseResponseDto> createTestCase(@RequestBody @Valid TestCaseRequestDto testCaseRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(testCaseService.createTestCase(testCaseRequestDto));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TestCaseResponseDto> updateTestCase(@PathVariable String id, @RequestBody TestCaseRequestDto testCaseRequestDto) {
-        try {
-            TestCaseResponseDto testCaseResponseDto = testCaseService.updateTestCase(id, testCaseRequestDto);
-            return ResponseEntity.ok(testCaseResponseDto);
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        TestCaseResponseDto testCaseResponseDto = testCaseService.updateTestCase(id, testCaseRequestDto);
+        return ResponseEntity.ok(testCaseResponseDto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<TestCaseResponseDto> deleteTestCase(@PathVariable String id) {
-        try {
-            return ResponseEntity.ok(testCaseService.deleteTestCase(id));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return ResponseEntity.ok(testCaseService.deleteTestCase(id));
     }
 }
