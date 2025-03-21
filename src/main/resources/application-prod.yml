@@ -3,9 +3,9 @@ spring:
     name: TestCaseManagement
   data:
     mongodb:
-      uri: mongodb://mongodb.railway.internal:27017/prod_testcase_db
-      username: mongo
-      password: wJkmJDqkxJSKZvmitnnhPNqHcfgMAjGH
+      uri: ${MONGODB_URI}
+      username: ${MONGODB_USERNAME}
+      password: ${MONGODB_PASSWORD}
       auto-index-creation: true
 
 springdoc:
