@@ -3,6 +3,7 @@ package ai.zomind.testcasemanagement.controller;
 import ai.zomind.testcasemanagement.dto.TestCaseRequestDto;
 import ai.zomind.testcasemanagement.dto.TestCaseResponseDto;
 import ai.zomind.testcasemanagement.service.TestCaseService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ public class TestCaseController {
     private TestCaseService testCaseService;
 
     @GetMapping
+    @Operation(summary = "Get all test cases, also filter by status and priority optionally")
     public Page<TestCaseResponseDto> getTestCases(
             @RequestParam(required = false) String status,
             @RequestParam(required = false) String priority,
@@ -36,23 +38,27 @@ public class TestCaseController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get test case by id")
     public ResponseEntity<TestCaseResponseDto> getTestCaseById(@PathVariable String id) {
         TestCaseResponseDto testCaseResponseDto = testCaseService.getTestCaseById(id);
         return ResponseEntity.ok(testCaseResponseDto);
     }
 
     @PostMapping
+    @Operation(summary = "Create a new test case")
     public ResponseEntity<TestCaseResponseDto> createTestCase(@RequestBody @Valid TestCaseRequestDto testCaseRequestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(testCaseService.createTestCase(testCaseRequestDto));
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Update test case by id")
     public ResponseEntity<TestCaseResponseDto> updateTestCase(@PathVariable String id, @RequestBody TestCaseRequestDto testCaseRequestDto) {
         TestCaseResponseDto testCaseResponseDto = testCaseService.updateTestCase(id, testCaseRequestDto);
         return ResponseEntity.ok(testCaseResponseDto);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete test case by id")
     public ResponseEntity<TestCaseResponseDto> deleteTestCase(@PathVariable String id) {
         return ResponseEntity.ok(testCaseService.deleteTestCase(id));
     }
