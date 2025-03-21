@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: TestCaseManagement
+  data:
+    mongodb:
+      uri: mongodb://mongodb.railway.internal:27017/prod_testcase_db
+      username: mongo
+      password: wJkmJDqkxJSKZvmitnnhPNqHcfgMAjGH
+      auto-index-creation: true
+
+springdoc:
+  swagger-ui:
+    path: /docs.html
