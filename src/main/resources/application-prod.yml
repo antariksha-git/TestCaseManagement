@@ -3,7 +3,7 @@ spring:
     name: TestCaseManagement
   data:
     mongodb:
-      uri: ${MONGODB_URI}
+      uri: ${MONGODB_URL}
       username: ${MONGODB_USERNAME}
       password: ${MONGODB_PASSWORD}
       auto-index-creation: true
