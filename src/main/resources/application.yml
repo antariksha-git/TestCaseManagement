@@ -5,3 +5,7 @@ spring:
     mongodb:
       uri: mongodb://localhost:27017/testcase_db
       auto-index-creation: true
+
+springdoc:
+  swagger-ui:
+    path: /docs.html
